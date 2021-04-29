@@ -4,3 +4,8 @@ services:
       image: shoes-backend:dev
       environment:
         SERVICE_VERSION: v1
+        
+network:
+    default:
+        external:
+            name: int221-network
