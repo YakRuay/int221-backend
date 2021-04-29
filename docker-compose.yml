@@ -5,7 +5,7 @@ services:
       environment:
         SERVICE_VERSION: v1
         
-network:
+networks:
     default:
         external:
             name: int221-network
