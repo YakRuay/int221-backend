@@ -1,5 +1,7 @@
 package int221.shoes.int221backend.models;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,10 +19,19 @@ import lombok.ToString;
 @Entity
 @Table(name = "Products")
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @ToString @EqualsAndHashCode
-public class Product {
+public class Products {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id;
     @NonNull
     private String name;
+    @NonNull
+    private String productDeatil;
+    @NonNull
+    private Date productReleaseDate;
+    @NonNull
+    private String productImage;
+    @NonNull
+    private String productPrice;
+
 }
