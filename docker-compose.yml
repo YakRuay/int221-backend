@@ -1,7 +1,7 @@
 services:
     backend:
       build: .
-      image: ghcr.io/rewbuglag/int221--backend:dev
+      image: ghcr.io/rewbuglag/int221-backend:dev
       environment:
         SERVICE_VERSION: v1
         
