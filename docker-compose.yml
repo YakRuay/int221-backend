@@ -1,7 +1,7 @@
 services:
     backend:
       build: .
-      image: shoes-backend:dev
+      image: ghcr.io/rewbuglag/int221--backend:dev
       environment:
         SERVICE_VERSION: v1
         
