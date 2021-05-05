@@ -34,32 +34,51 @@ public class ImageRestController {
     }
 
     @PostMapping ("/add/{productID}")
-    public ResponseEntity<Object> uploadImage(@RequestParam MultipartFile file, @PathVariable String productID) throws IOException{
-        System.out.println(file.getContentType());
-        File myFile = new File(IMAGE_PATH + productID + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
-        myFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(myFile);
-        fos.write(file.getBytes());
-        fos.close();
-        return  new ResponseEntity<>("The File Uploaded Successfully", HttpStatus.OK);
+    public ResponseEntity<Object> uploadImage(@RequestParam MultipartFile file, @PathVariable String productID) {
+        try {
+            File myFile = new File(IMAGE_PATH + productID + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
+            myFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(myFile);
+            fos.write(file.getBytes());
+            fos.close();
+            return  new ResponseEntity<>("The File Uploaded Successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    @PutMapping("/edit/{productID:.+}")
-    public ResponseEntity<Object> changeImage(@RequestParam MultipartFile file, @PathVariable String productID) throws IOException {
-        FileOutputStream fos = new FileOutputStream(IMAGE_PATH + productID);
-        fos.write(file.getBytes());
-        fos.close();
-        return  new ResponseEntity<>("The File Change Successfully", HttpStatus.OK);
+    @PutMapping("/edit/{productID}")
+    public ResponseEntity<Object> changeImage(@RequestParam MultipartFile file, @PathVariable String productID) {
+        try {
+            String productIDString[] = productID.split("\\.(?=[^\\.]+$)");
+            int hasId = parseInt(productIDString[0]);
+            if(hasFoundId(hasId)){
+                FileOutputStream fos = new FileOutputStream(IMAGE_PATH + productID + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
+                fos.write(file.getBytes());
+                fos.close();
+                return  new ResponseEntity<>("The File Change Successfully", HttpStatus.OK);
+            }
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
+        return null;
     }
 
     @DeleteMapping("/delete/{productID:.+}")
-    public void deleteImage(@PathVariable String productID){
-        String IdString[] = productID.split("\\.(?=[^\\.]+$)");
-        int hasId = parseInt(IdString[0]);
-        if (hasFoundId(hasId)){
-            File myFile = new File(IMAGE_PATH + productID);
-            myFile.delete();
+    public ResponseEntity<Object> deleteImage(@PathVariable String productID){
+        try {
+            String IdString[] = productID.split("\\.(?=[^\\.]+$)");
+            int hasId = parseInt(IdString[0]);
+            if (hasFoundId(hasId)) {
+                File myFile = new File(IMAGE_PATH + productID);
+                myFile.delete();
+                return  new ResponseEntity<>("The Delete Successfully", HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public boolean hasFoundId(int productID){
