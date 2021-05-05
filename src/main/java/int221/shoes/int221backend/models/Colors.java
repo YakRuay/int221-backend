@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="Colors")
-@Getter @Setter
+@Getter
 public class Colors {
     @Id
     private int colorID;
