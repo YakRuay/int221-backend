@@ -1,0 +1,46 @@
+name: int221-backend-dev
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Github Docker Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ghcr.io/yakruay/int221-backend:dev
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Execute deploy SSH commmands on remote server
+      uses: JimCronqvist/action-ssh@master
+      with:
+        hosts: 'rew@52.187.108.86'
+        privateKey: ${{ secrets.PRIVATE_KEY }}
+        command: |
+          cd int221-backend
+          git checkout dev
+          git pull
+          docker pull ghcr.io/yakruay/int221-backend:dev
+          docker-compose down
+          docker-compose up -d
