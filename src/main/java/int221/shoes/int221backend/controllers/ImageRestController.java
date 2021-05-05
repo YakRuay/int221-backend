@@ -27,16 +27,16 @@ public class ImageRestController {
 
     @GetMapping("/get/{productID:.+}")
     public ResponseEntity<byte[]> getImage(@PathVariable String productID) throws IOException {
-        FileInputStream fi = new FileInputStream(IMAGE_PATH + productID);
-        byte[] image = fi.readAllBytes();
-        fi.close();
+        FileInputStream file = new FileInputStream(IMAGE_PATH + productID);
+        byte[] image = file.readAllBytes();
+        file.close();
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
     }
 
     @PostMapping ("/add/{productID}")
-    public ResponseEntity<Object> fileUpload(@RequestParam MultipartFile file, @PathVariable String productID)throws IOException{
+    public ResponseEntity<Object> uploadImage(@RequestParam MultipartFile file, @PathVariable String productID) throws IOException{
         System.out.println(file.getContentType());
-        File myFile = new File(IMAGE_PATH + productID + MediaType.IMAGE_PNG);
+        File myFile = new File(IMAGE_PATH + productID + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
         myFile.createNewFile();
         FileOutputStream fos = new FileOutputStream(myFile);
         fos.write(file.getBytes());
@@ -45,10 +45,11 @@ public class ImageRestController {
     }
 
     @PutMapping("/edit/{productID:.+}")
-    public void changeImage(@RequestParam("File")MultipartFile file, @PathVariable String productID) throws IOException {
+    public ResponseEntity<Object> changeImage(@RequestParam MultipartFile file, @PathVariable String productID) throws IOException {
         FileOutputStream fos = new FileOutputStream(IMAGE_PATH + productID);
         fos.write(file.getBytes());
         fos.close();
+        return  new ResponseEntity<>("The File Change Successfully", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{productID:.+}")
