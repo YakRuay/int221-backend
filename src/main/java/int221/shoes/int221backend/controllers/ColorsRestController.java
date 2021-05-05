@@ -8,17 +8,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/colors")
 @CrossOrigin(origins = "*")
 public class ColorsRestController {
     @Autowired
     private ColorJpaRepository colorsJpaRepository;
 
-    @GetMapping("/colors")
+    @GetMapping("/getall")
     public List<Colors> showAllColors(){
         return this.colorsJpaRepository.findAll();
     }
 
-    @GetMapping("/colors/{colorID}")
+    @GetMapping("/{colorID}")
     public Colors showColor(@PathVariable int colorID){
         return this.colorsJpaRepository.findById(colorID).orElse(null);
     }

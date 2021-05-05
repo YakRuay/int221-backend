@@ -6,10 +6,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="Colors")
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor @ToString @EqualsAndHashCode
+@Getter @Setter
 public class Colors {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int colorID;
     @NonNull
     private String colorName;

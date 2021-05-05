@@ -9,17 +9,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/brands")
 @CrossOrigin(origins = "*")
 public class BrandRestController {
     @Autowired
     private BrandJpaRepository brandJpaRepository;
 
-    @GetMapping("/brands")
+    @GetMapping("/getall")
     public List<Brands> showAllBrand() {
         return this.brandJpaRepository.findAll();
     }
 
-    @GetMapping("/brands/{brandID}")
+    @GetMapping("/{brandID}")
     public Brands showBrand(@PathVariable int brandID){
         return this.brandJpaRepository.findById(brandID).orElse(null);
     }

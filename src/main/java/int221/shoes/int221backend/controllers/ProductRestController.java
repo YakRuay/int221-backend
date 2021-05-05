@@ -21,7 +21,7 @@ public class ProductRestController {
 		return productJpaRepository.findAll();
 	}
 
-	@GetMapping("/get/{productID}")
+	@GetMapping("/{productID}")
 	public Products showProduct(@PathVariable int productID){
 		return this.productJpaRepository.findById(productID).orElse(null);
 	}
@@ -30,6 +30,12 @@ public class ProductRestController {
 	public Products newProduct(@RequestBody Products newProduct){
 		productJpaRepository.save(newProduct);
 		return newProduct;
+	}
+
+	@DeleteMapping("/{productID}")
+	public String deleteProduct(@PathVariable int productID){
+		productJpaRepository.deleteById(productID);
+		return "car deleted";
 	}
 
 }

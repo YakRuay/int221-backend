@@ -6,10 +6,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Brands")
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor @ToString @EqualsAndHashCode
+@Getter @Setter
 public class Brands {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int brandID;
     @NonNull
     private String brandName;
