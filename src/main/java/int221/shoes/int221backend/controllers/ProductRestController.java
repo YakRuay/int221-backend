@@ -2,6 +2,7 @@ package int221.shoes.int221backend.controllers;
 
 import java.util.List;
 
+import int221.shoes.int221backend.exception.ApiRequestException;
 import int221.shoes.int221backend.models.Brands;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,9 @@ public class ProductRestController {
 
 	@GetMapping("/{productID}")
 	public Products showProduct(@PathVariable int productID){
+		if(productJpaRepository.findById(productID).orElse(null) == null){
+			throw new ApiRequestException("Not Found Product");
+		}
 		return this.productJpaRepository.findById(productID).orElse(null);
 	}
 
@@ -34,6 +38,9 @@ public class ProductRestController {
 
 	@PutMapping("/{productID}")
 	public Products updateProduct(@RequestBody Products updateProduct, @PathVariable int productID) {
+		if(productJpaRepository.findById(productID).orElse(null) == null){
+			throw new ApiRequestException("Not Found Product");
+		}
 		return productJpaRepository.findById(productID)
 				.map(product -> {
 					product.setProductName(updateProduct.getProductName());
@@ -50,7 +57,7 @@ public class ProductRestController {
 	@DeleteMapping("/{productID}")
 	public String deleteProduct(@PathVariable int productID){
 		productJpaRepository.deleteById(productID);
-		return "car deleted";
+		return "null";
 	}
 
 }
