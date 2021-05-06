@@ -24,10 +24,12 @@ public class ProductRestController {
 
 	@GetMapping("/{productID}")
 	public Products showProduct(@PathVariable int productID){
-		if(productJpaRepository.findById(productID).orElse(null) == null){
+		try {
+			return this.productJpaRepository.findById(productID).orElse(null);
+		} catch (Exception e) {
 			throw new ApiRequestException("Not Found Product");
 		}
-		return this.productJpaRepository.findById(productID).orElse(null);
+
 	}
 
 	@PostMapping("/add")
@@ -38,24 +40,27 @@ public class ProductRestController {
 
 	@PutMapping("/{productID}")
 	public Products updateProduct(@RequestBody Products updateProduct, @PathVariable int productID) {
-		if(productJpaRepository.findById(productID).orElse(null) == null){
-			throw new ApiRequestException("Not Found Product");
-		}
-		return productJpaRepository.findById(productID)
-				.map(product -> {
-					product.setProductName(updateProduct.getProductName());
-					product.setProductDetail(updateProduct.getProductDetail());
-					product.setProductReleaseDate(updateProduct.getProductReleaseDate());
-					product.setProductPrice(updateProduct.getProductPrice());
-					product.setBrandID(updateProduct.getBrandID());
-					product.setColors(updateProduct.getColors());
-					return productJpaRepository.save(updateProduct);
-				})
-				.orElseGet(() -> productJpaRepository.save(updateProduct));
+			if(productJpaRepository.findById(productID).orElse(null) == null) {
+				throw new ApiRequestException("Not Found Product");
+			}
+			return productJpaRepository.findById(productID)
+					.map(product -> {
+						product.setProductName(updateProduct.getProductName());
+						product.setProductDetail(updateProduct.getProductDetail());
+						product.setProductReleaseDate(updateProduct.getProductReleaseDate());
+						product.setProductPrice(updateProduct.getProductPrice());
+						product.setBrandID(updateProduct.getBrandID());
+						product.setColors(updateProduct.getColors());
+						return productJpaRepository.save(updateProduct);
+					})
+					.orElseGet(() -> productJpaRepository.save(updateProduct));
 	}
 
 	@DeleteMapping("/{productID}")
 	public String deleteProduct(@PathVariable int productID){
+		if(productJpaRepository.findById(productID).orElse(null) == null){
+			throw new ApiRequestException("Not Found Product");
+		}
 		productJpaRepository.deleteById(productID);
 		return "null";
 	}

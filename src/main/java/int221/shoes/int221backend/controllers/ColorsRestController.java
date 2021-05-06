@@ -1,5 +1,6 @@
 package int221.shoes.int221backend.controllers;
 
+import int221.shoes.int221backend.exception.ApiRequestException;
 import int221.shoes.int221backend.models.Colors;
 import int221.shoes.int221backend.repositories.ColorJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class ColorsRestController {
 
     @GetMapping("/{colorID}")
     public Colors showColor(@PathVariable int colorID){
+        if(colorsJpaRepository.findById(colorID).orElse(null) == null) {
+            throw new ApiRequestException("Not Found Color");
+        }
         return this.colorsJpaRepository.findById(colorID).orElse(null);
     }
 }

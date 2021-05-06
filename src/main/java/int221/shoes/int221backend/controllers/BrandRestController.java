@@ -1,5 +1,6 @@
 package int221.shoes.int221backend.controllers;
 
+import int221.shoes.int221backend.exception.ApiRequestException;
 import int221.shoes.int221backend.models.Brands;
 import int221.shoes.int221backend.repositories.BrandJpaRepository;
 
@@ -22,6 +23,9 @@ public class BrandRestController {
 
     @GetMapping("/{brandID}")
     public Brands showBrand(@PathVariable int brandID){
+        if(brandJpaRepository.findById(brandID).orElse(null) == null) {
+            throw new ApiRequestException("Not Found Brand");
+        }
         return this.brandJpaRepository.findById(brandID).orElse(null);
     }
 
