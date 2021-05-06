@@ -70,11 +70,11 @@ public class ImageRestController {
         try {
             String IdString[] = productID.split("\\.(?=[^\\.]+$)");
             int hasId = parseInt(IdString[0]);
-            if (hasFoundId(hasId)) {
-                File myFile = new File(IMAGE_PATH + productID);
+//            if (hasFoundId(hasId)) {
+                File myFile = new File(IMAGE_PATH + productID + ".png");
                 myFile.delete();
                 return  new ResponseEntity<>("The Delete Successfully", HttpStatus.OK);
-            }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,14 +82,15 @@ public class ImageRestController {
     }
 
     public boolean hasFoundId(int productID){
-        List<Products> products = productJpaRepository.findAll();
-        for (int i = 0; i < products.size(); i++) {
-            if(products.get(i).getProductID() == productID){
-                return true;
+            List<Products> products = productJpaRepository.findAll();
+            if(products.isEmpty()){
+                return false;
             }
-        }
+            for (int i = 0; i < products.size(); i++) {
+                    if(products.get(i).getProductID() == productID){
+                        return true;
+                    }
+                }
         return false;
     }
-
-
 }

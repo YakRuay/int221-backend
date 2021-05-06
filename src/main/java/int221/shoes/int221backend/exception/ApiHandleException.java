@@ -13,7 +13,6 @@ public class ApiHandleException {
 
     @ExceptionHandler(value = {ApiRequestException.class})
     public ResponseEntity<Object> handleApiRequestException(ApiRequestException e){
-        System.out.println("Exception Check");
 //        1. Create payload containing exception details
         HttpStatus badRequest = HttpStatus.NOT_FOUND;
         ApiException apiException = new ApiException(

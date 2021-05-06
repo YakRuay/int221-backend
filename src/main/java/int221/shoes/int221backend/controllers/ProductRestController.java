@@ -24,12 +24,10 @@ public class ProductRestController {
 
 	@GetMapping("/{productID}")
 	public Products showProduct(@PathVariable int productID){
-		try {
-			return this.productJpaRepository.findById(productID).orElse(null);
-		} catch (Exception e) {
+		if(productJpaRepository.findById(productID).orElse(null) == null){
 			throw new ApiRequestException("Not Found Product");
 		}
-
+			return this.productJpaRepository.findById(productID).orElse(null);
 	}
 
 	@PostMapping("/add")
@@ -57,12 +55,18 @@ public class ProductRestController {
 	}
 
 	@DeleteMapping("/{productID}")
-	public String deleteProduct(@PathVariable int productID){
-		if(productJpaRepository.findById(productID).orElse(null) == null){
-			throw new ApiRequestException("Not Found Product");
+	public void deleteProduct(@PathVariable int productID){
+		try{
+			if(productJpaRepository.findById(productID).orElse(null) == null){
+				throw new ApiRequestException("Not Found Product");
+			}
+			productJpaRepository.deleteById(productID);
+			ImageRestController imgRest = new ImageRestController();
+			imgRest.deleteImage(Integer.toString(productID));
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		productJpaRepository.deleteById(productID);
-		return "null";
 	}
 
 }
