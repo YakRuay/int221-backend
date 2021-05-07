@@ -68,13 +68,9 @@ public class ImageRestController {
     @DeleteMapping("/delete/{productID:.+}")
     public ResponseEntity<Object> deleteImage(@PathVariable String productID){
         try {
-            String IdString[] = productID.split("\\.(?=[^\\.]+$)");
-            int hasId = parseInt(IdString[0]);
-//            if (hasFoundId(hasId)) {
                 File myFile = new File(IMAGE_PATH + productID + ".png");
                 myFile.delete();
                 return  new ResponseEntity<>("The Delete Successfully", HttpStatus.OK);
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
