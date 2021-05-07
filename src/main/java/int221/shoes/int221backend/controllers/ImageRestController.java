@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -27,10 +28,15 @@ public class ImageRestController {
 
     @GetMapping("/get/{productID:.+}")
     public ResponseEntity<byte[]> getImage(@PathVariable String productID) throws IOException {
-        FileInputStream file = new FileInputStream(IMAGE_PATH + productID);
-        byte[] image = file.readAllBytes();
-        file.close();
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
+        try {
+            FileInputStream file = new FileInputStream(IMAGE_PATH + productID);
+            byte[] image = file.readAllBytes();
+            file.close();
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
+        } catch(Exception e) {
+            throw new RemoteException("Image not Found");
+        }
+
     }
 
     @PostMapping ("/add/{productID}")
