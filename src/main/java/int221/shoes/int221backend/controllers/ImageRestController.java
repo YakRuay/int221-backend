@@ -40,7 +40,7 @@ public class ImageRestController {
     }
 
     @PostMapping ("/add/{productID}")
-    public ResponseEntity<Object> uploadImage(@RequestParam MultipartFile file, @PathVariable String productID) {
+    public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable String productID) {
         try {
             File myFile = new File(IMAGE_PATH + productID + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
             myFile.createNewFile();

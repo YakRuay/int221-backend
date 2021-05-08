@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter @Setter
 public class Products {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productID;
     @NonNull
     private String productName;
