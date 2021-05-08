@@ -33,7 +33,7 @@ public class ProductRestController {
 
 	@GetMapping("/last")
 	public List<Products> getLastProducts(){
-		return productJpaRepository.findTopByOrderByProductIDProductDesc().stream().collect(Collectors.toList());
+		return productJpaRepository.findProductsByProductIDOrderByProductIDDesc().stream().collect(Collectors.toList());
 	}
 
 	@PostMapping("/add")
