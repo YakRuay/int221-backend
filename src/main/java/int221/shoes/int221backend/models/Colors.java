@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Getter
 public class Colors {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int colorID;
     @NonNull
     private String colorName;

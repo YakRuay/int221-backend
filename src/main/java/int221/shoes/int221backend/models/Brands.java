@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Getter
 public class Brands {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int brandID;
     @NonNull
     private String brandName;
