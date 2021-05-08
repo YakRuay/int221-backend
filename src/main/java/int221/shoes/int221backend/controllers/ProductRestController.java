@@ -1,6 +1,7 @@
 package int221.shoes.int221backend.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import int221.shoes.int221backend.exception.ApiRequestException;
 import int221.shoes.int221backend.models.Brands;
@@ -28,6 +29,11 @@ public class ProductRestController {
 			throw new ApiRequestException("Not Found Product");
 		}
 			return this.productJpaRepository.findById(productID).orElse(null);
+	}
+
+	@GetMapping("/last")
+	public List<Products> getLastProducts(){
+		return productJpaRepository.findTopByOrderByProductIDProductDesc().stream().collect(Collectors.toList());
 	}
 
 	@PostMapping("/add")
