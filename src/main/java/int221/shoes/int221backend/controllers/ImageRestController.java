@@ -74,7 +74,7 @@ public class ImageRestController {
     @DeleteMapping("/delete/{productID}")
     public ResponseEntity<Object> deleteImage(@PathVariable String productID){
         try {
-                File myFile = new File(IMAGE_PATH + productID);
+                File myFile = new File(IMAGE_PATH + productID + ".png");
                 myFile.delete();
                 return  new ResponseEntity<>("The Delete Successfully", HttpStatus.OK);
         } catch (Exception e) {
