@@ -26,7 +26,7 @@ public class ImageRestController {
     private ProductJpaRepository productJpaRepository;
     private static final String IMAGE_PATH = "./src/images/";
 
-    @GetMapping("/get/{productID:.+}")
+    @GetMapping("/get/{productID}")
     public ResponseEntity<byte[]> getImage(@PathVariable String productID) throws IOException {
         try {
             FileInputStream file = new FileInputStream(IMAGE_PATH + productID);
@@ -54,13 +54,13 @@ public class ImageRestController {
         return null;
     }
 
-    @PutMapping("/edit/{productID}")
-    public ResponseEntity<Object> changeImage(@RequestParam MultipartFile file, @PathVariable String productID) {
+    @PutMapping("/edit/{imageName}")
+    public ResponseEntity<Object> changeImage(@RequestParam MultipartFile file, @PathVariable String imageName) {
         try {
-            String productIDString[] = productID.split("\\.(?=[^\\.]+$)");
+            String productIDString[] = imageName.split("\\.(?=[^\\.]+$)");
             int hasId = parseInt(productIDString[0]);
             if(hasFoundId(hasId)){
-                FileOutputStream fos = new FileOutputStream(IMAGE_PATH + productID + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
+                FileOutputStream fos = new FileOutputStream(IMAGE_PATH + imageName);
                 fos.write(file.getBytes());
                 fos.close();
                 return  new ResponseEntity<>("The File Change Successfully", HttpStatus.OK);
@@ -71,10 +71,10 @@ public class ImageRestController {
         return null;
     }
 
-    @DeleteMapping("/delete/{productID:.+}")
+    @DeleteMapping("/delete/{productID}")
     public ResponseEntity<Object> deleteImage(@PathVariable String productID){
         try {
-                File myFile = new File(IMAGE_PATH + productID + ".png");
+                File myFile = new File(IMAGE_PATH + productID);
                 myFile.delete();
                 return  new ResponseEntity<>("The Delete Successfully", HttpStatus.OK);
         } catch (Exception e) {
