@@ -1,0 +1,13 @@
+services:
+    backend:
+      build: .
+      image: ghcr.io/yakruay/int221-backend:dev
+      environment:
+        SERVICE_VERSION: v1
+      volumes:
+        - ~/backendImages:/src/images
+
+networks:
+    default:
+        external:
+            name: int221-network

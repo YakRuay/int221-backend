@@ -1,0 +1,1 @@
+INSERT INTO Products(id, name) VALUES (1234, 'XYZ');
