@@ -26,10 +26,10 @@ public class ImageRestController {
     private ProductJpaRepository productJpaRepository;
     private static final String IMAGE_PATH = "./src/images/";
 
-    @GetMapping("/get/{productID}")
-    public ResponseEntity<byte[]> getImage(@PathVariable String productID) throws IOException {
+    @GetMapping("/get/{imageName}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String imageName) throws IOException {
         try {
-            FileInputStream file = new FileInputStream(IMAGE_PATH + productID);
+            FileInputStream file = new FileInputStream(IMAGE_PATH + imageName);
             byte[] image = file.readAllBytes();
             file.close();
             return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
@@ -39,10 +39,10 @@ public class ImageRestController {
 
     }
 
-    @PostMapping ("/add/{productID}")
-    public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable String productID) {
+    @PostMapping ("/add/{imageName}")
+    public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable String imageName) {
         try {
-            File myFile = new File(IMAGE_PATH + productID);
+            File myFile = new File(IMAGE_PATH + imageName);
             myFile.createNewFile();
             FileOutputStream fos = new FileOutputStream(myFile);
             fos.write(file.getBytes());
@@ -57,8 +57,8 @@ public class ImageRestController {
     @PutMapping("/edit/{imageName}")
     public ResponseEntity<Object> changeImage(@RequestParam MultipartFile file, @PathVariable String imageName) {
         try {
-            String productIDString[] = imageName.split("\\.(?=[^\\.]+$)");
-            int hasId = parseInt(productIDString[0]);
+            String imageNameString[] = imageName.split("\\.(?=[^\\.]+$)");
+            int hasId = parseInt(imageNameString[0]);
             if(hasFoundId(hasId)){
                 FileOutputStream fos = new FileOutputStream(IMAGE_PATH + imageName);
                 fos.write(file.getBytes());
@@ -71,10 +71,10 @@ public class ImageRestController {
         return null;
     }
 
-    @DeleteMapping("/delete/{productID}")
-    public ResponseEntity<Object> deleteImage(@PathVariable String productID){
+    @DeleteMapping("/delete/{imageName}")
+    public ResponseEntity<Object> deleteImage(@PathVariable String imageName){
         try {
-                File myFile = new File(IMAGE_PATH + productID + ".png");
+                File myFile = new File(IMAGE_PATH + imageName + ".png");
                 myFile.delete();
                 return  new ResponseEntity<>("The Delete Successfully", HttpStatus.OK);
         } catch (Exception e) {

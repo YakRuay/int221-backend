@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface ProductJpaRepository extends JpaRepository<Products, Integer> {
+public interface  ProductJpaRepository extends JpaRepository<Products, Integer> {
     @Query("select max(productID) from Products")
     Optional<Products> findProductsByProductIDOrderByProductIDDesc();
 }
